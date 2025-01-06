@@ -1,8 +1,12 @@
-<!-- Header -->
-<app-nav></app-nav>
+<div class="main-section">
+  <!-- Top row -->
+  <app-nav class="nav"></app-nav>
 
-<router-outlet></router-outlet>
+  <!-- Second row -->
+  <app-discord-bar class="discord-bar"></app-discord-bar>
+  <app-sidebar class="sidebar"></app-sidebar>
+  <router-outlet class="main-content"></router-outlet>
 
-@if (!(auth.authStateWithDelay$ | async)) {
-<app-auth-modal></app-auth-modal>
-}
+  <!-- Auth modal (if needed) -->
+  <app-auth-modal></app-auth-modal>
+</div>
