@@ -1,70 +1,172 @@
-<section class="grid grid-rows-18 h-screen grid-cols-1 gap-y-2 p-2">
-  <!-- Main square occupies the first row -->
+<!-- Outer wrapper using the same classes from your first snippet -->
+<div
+  class="border-ondark-subtle bg-ondark-base relative flex shrink-0 flex-col overflow-hidden pt-4 border-r pointer-events-auto w-[var(--communities-width)] dark:bg-gray-800 dark:border-gray-700"
+>
+  <!-- Keep the grid layout for your squares -->
   <div
-    class="bg-slate-400 p-4 border border-black rounded main-square row-start-1 flex justify-center items-center"
+    class="grid grid-rows-18 h-screen grid-cols-1 gap-y-2 justify-items-center"
   >
-    <div class="w-20 h-20 flex justify-center items-center rounded">
-      <span class="material-icons text-3xl">home</span>
+    <!-- 1) Main square -->
+    <div data-id="metafy-tooltip" class="row-start-1">
+      <a
+        href="#"
+        class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg /* typical text/hover color changes */ text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
+      >
+        <!-- Gradient overlay -->
+        <div
+          class="via-neon-500 -z-1 pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-16 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent to-transparent opacity-15"
+        ></div>
+        <!-- Focus border on hover (scale up) -->
+        <div
+          class="border-ondark-focused/50 absolute inset-0 scale-0 rounded-[inherit] border-2 transition-transform group-hover:scale-100"
+        ></div>
+        <!-- Inner content square -->
+        <div
+          class="bg-ondark-medium relative flex size-10 items-center justify-center rounded dark:bg-gray-700 transition-colors"
+        >
+          <span class="material-icons text-3xl">home</span>
+        </div>
+      </a>
     </div>
-  </div>
 
-  <!-- Menu squares -->
-  <div
-    class="bg-slate-400 p-4 border border-black rounded menu-squares row-start-2 flex justify-center items-center"
-  >
-    <div class="w-20 h-20 flex justify-center items-center rounded">
-      <span class="material-icons text-3xl">menu</span>
+    <!-- 2) Menu square -->
+    <div data-id="metafy-tooltip" class="row-start-2">
+      <a
+        href="#"
+        class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
+      >
+        <div
+          class="via-neon-500 -z-1 pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-16 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent to-transparent opacity-15"
+        ></div>
+        <div
+          class="border-ondark-focused/50 absolute inset-0 scale-0 rounded-[inherit] border-2 transition-transform group-hover:scale-100"
+        ></div>
+        <div
+          class="bg-ondark-medium relative flex size-10 items-center justify-center rounded dark:bg-gray-700 transition-colors"
+        >
+          <span class="material-icons text-3xl">menu</span>
+        </div>
+      </a>
     </div>
-  </div>
 
-  <div
-    class="bg-slate-400 p-4 border border-black rounded menu-squares row-start-3 flex justify-center items-center"
-  >
-    <div class="w-20 h-20 flex justify-center items-center rounded">
-      <span class="material-icons text-3xl">menu_book</span>
+    <!-- 3) Menu square -->
+    <div data-id="metafy-tooltip" class="row-start-3">
+      <a
+        href="#"
+        class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
+      >
+        <div
+          class="via-neon-500 -z-1 pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-16 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent to-transparent opacity-15"
+        ></div>
+        <div
+          class="border-ondark-focused/50 absolute inset-0 scale-0 rounded-[inherit] border-2 transition-transform group-hover:scale-100"
+        ></div>
+        <div
+          class="bg-ondark-medium relative flex size-10 items-center justify-center rounded dark:bg-gray-700 transition-colors"
+        >
+          <span class="material-icons text-3xl">menu_book</span>
+        </div>
+      </a>
     </div>
-  </div>
 
-  <div
-    class="bg-slate-400 p-4 border border-black rounded menu-squares row-start-4 flex justify-center items-center"
-  >
-    <div class="w-20 h-20 flex justify-center items-center rounded">
-      <span class="material-icons text-3xl">settings</span>
+    <!-- 4) Settings square -->
+    <div data-id="metafy-tooltip" class="row-start-4">
+      <a
+        href="#"
+        class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
+      >
+        <div
+          class="via-neon-500 -z-1 pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-16 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent to-transparent opacity-15"
+        ></div>
+        <div
+          class="border-ondark-focused/50 absolute inset-0 scale-0 rounded-[inherit] border-2 transition-transform group-hover:scale-100"
+        ></div>
+        <div
+          class="bg-ondark-medium relative flex size-10 items-center justify-center rounded dark:bg-gray-700 transition-colors"
+        >
+          <span class="material-icons text-3xl">settings</span>
+        </div>
+      </a>
     </div>
-  </div>
 
-  <div
-    class="bg-slate-400 p-4 border border-black rounded menu-squares row-start-5 flex justify-center items-center"
-  >
-    <div class="w-20 h-20 flex justify-center items-center rounded">
-      <span class="material-icons text-3xl">help</span>
+    <!-- 5) Help square -->
+    <div data-id="metafy-tooltip" class="row-start-5">
+      <a
+        href="#"
+        class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
+      >
+        <div
+          class="via-neon-500 -z-1 pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-16 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent to-transparent opacity-15"
+        ></div>
+        <div
+          class="border-ondark-focused/50 absolute inset-0 scale-0 rounded-[inherit] border-2 transition-transform group-hover:scale-100"
+        ></div>
+        <div
+          class="bg-ondark-medium relative flex size-10 items-center justify-center rounded dark:bg-gray-700 transition-colors"
+        >
+          <span class="material-icons text-3xl">help</span>
+        </div>
+      </a>
     </div>
-  </div>
 
-  <!-- Movie square -->
-  <div
-    class="bg-slate-400 p-4 border border-black rounded movie-squares row-start-6 flex justify-center items-center"
-  >
-    <div class="w-20 h-20 flex justify-center items-center rounded">
-      <span class="material-icons text-3xl">movie</span>
+    <!-- 6) Movie square -->
+    <div data-id="metafy-tooltip" class="row-start-6">
+      <a
+        href="#"
+        class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
+      >
+        <div
+          class="via-neon-500 -z-1 pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-16 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent to-transparent opacity-15"
+        ></div>
+        <div
+          class="border-ondark-focused/50 absolute inset-0 scale-0 rounded-[inherit] border-2 transition-transform group-hover:scale-100"
+        ></div>
+        <div
+          class="bg-ondark-medium relative flex size-10 items-center justify-center rounded dark:bg-gray-700 transition-colors"
+        >
+          <span class="material-icons text-3xl">movie</span>
+        </div>
+      </a>
     </div>
-  </div>
 
-  <!-- Community square -->
-  <div
-    class="bg-slate-400 p-4 border border-black rounded community-squares row-start-7 flex justify-center items-center"
-  >
-    <div class="w-20 h-20 flex justify-center items-center rounded">
-      <span class="material-icons text-3xl">groups</span>
+    <!-- 7) Community square -->
+    <div data-id="metafy-tooltip" class="row-start-7">
+      <a
+        href="#"
+        class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
+      >
+        <div
+          class="via-neon-500 -z-1 pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-16 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent to-transparent opacity-15"
+        ></div>
+        <div
+          class="border-ondark-focused/50 absolute inset-0 scale-0 rounded-[inherit] border-2 transition-transform group-hover:scale-100"
+        ></div>
+        <div
+          class="bg-ondark-medium relative flex size-10 items-center justify-center rounded dark:bg-gray-700 transition-colors"
+        >
+          <span class="material-icons text-3xl">groups</span>
+        </div>
+      </a>
     </div>
-  </div>
 
-  <!-- Add square occupies the last row -->
-  <div
-    class="bg-slate-400 p-4 border border-black rounded add-square row-start-18 flex justify-center items-center"
-  >
-    <div class="w-20 h-20 flex justify-center items-center rounded">
-      <span class="material-icons text-3xl">add</span>
+    <!-- 8) Add square (last row) -->
+    <div data-id="metafy-tooltip" class="row-start-18">
+      <a
+        href="#"
+        class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
+      >
+        <div
+          class="via-neon-500 -z-1 pointer-events-none absolute left-1/2 top-1/2 h-[168px] w-16 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-b from-transparent to-transparent opacity-15"
+        ></div>
+        <div
+          class="border-ondark-focused/50 absolute inset-0 scale-0 rounded-[inherit] border-2 transition-transform group-hover:scale-100"
+        ></div>
+        <div
+          class="bg-ondark-medium relative flex size-10 items-center justify-center rounded dark:bg-gray-700 transition-colors"
+        >
+          <span class="material-icons text-3xl">add</span>
+        </div>
+      </a>
     </div>
   </div>
-</section>
+</div>
