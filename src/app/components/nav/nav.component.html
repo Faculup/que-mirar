@@ -1,69 +1,67 @@
 <header id="header" class="bg-secondary">
-  <nav class="container mx-auto flex justify-start items-center py-8 px-4">
+  <nav class="container mx-auto flex justify-around items-center py-8 px-4">
     <!-- App Name -->
-    <a
+    <!-- <a
       class="text-3xl font-bold uppercase mr-4 text-indigo-400 dark:text-indigo-300"
       routerLink="/"
     >
       Clips
-    </a>
+    </a> -->
 
-    <div class="flex flex-grow items-center">
-      <ul class="flex flex-row mt-1">
-        <!-- Navigation Links -->
-        @if (auth.authState$ | async) {
-        <li>
-          <a
-            class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
-            [routerLinkActiveOptions]="{ exact: true }"
-            routerLink="/manage"
-            routerLinkActive="text-indigo-400 dark:text-indigo-500"
-            [queryParams]="{ sort: '1' }"
-            >Manage</a
-          >
-        </li>
-        <li>
-          <a
-            class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
-            routerLink="/upload"
-            routerLinkActive="text-indigo-400 dark:text-indigo-500"
-            >Upload</a
-          >
-        </li>
-        <li>
-          <a
-            class="px-2 text-gray-800 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400"
-            (click)="auth.logout($event)"
-            >Log Out</a
-          >
-        </li>
-        } @else {
-        <li>
-          <a
-            class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
-            href="#"
-            (click)="openModal($event)"
-            >Login / Register</a
-          >
-        </li>
-        }
-        <li>
-          <a
-            class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
-            routerLink="/about"
-            routerLinkActive="text-indigo-400 dark:text-indigo-500"
-            >About</a
-          >
-        </li>
-        <li>
-          <button
-            class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
-            (click)="toggleDarkMode()"
-          >
-            {{ isDarkMode ? "Light Mode" : "Dark Mode" }}
-          </button>
-        </li>
-      </ul>
-    </div>
+    <ul class="flex flex-row mt-1">
+      <!-- Navigation Links -->
+      @if (auth.authState$ | async) {
+      <li>
+        <a
+          class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLink="/manage"
+          routerLinkActive="text-indigo-400 dark:text-indigo-500"
+          [queryParams]="{ sort: '1' }"
+          >Manage</a
+        >
+      </li>
+      <li>
+        <a
+          class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
+          routerLink="/upload"
+          routerLinkActive="text-indigo-400 dark:text-indigo-500"
+          >Upload</a
+        >
+      </li>
+      <li>
+        <a
+          class="px-2 text-gray-800 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400"
+          (click)="auth.logout($event)"
+          >Log Out</a
+        >
+      </li>
+      } @else {
+      <li>
+        <a
+          class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
+          href="#"
+          (click)="openModal($event)"
+          >Login / Register</a
+        >
+      </li>
+      }
+      <li>
+        <a
+          class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
+          routerLink="/about"
+          routerLinkActive="text-indigo-400 dark:text-indigo-500"
+          >About</a
+        >
+      </li>
+      <li>
+        <button
+          class="px-2 text-gray-800 dark:text-gray-300 hover:text-indigo-400 dark:hover:text-indigo-500"
+          (click)="toggleDarkMode()"
+        >
+          {{ isDarkMode ? "Light Mode" : "Dark Mode" }}
+        </button>
+      </li>
+    </ul>
   </nav>
 </header>

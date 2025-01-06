@@ -13,7 +13,6 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     RouterOutlet,
     NavComponent,
     AuthModalComponent,
-    AsyncPipe,
     CommonModule,
     DiscordBarComponent,
     SidebarComponent,

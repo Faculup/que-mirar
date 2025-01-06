@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
   selector: 'app-sidebar',
   imports: [],
-  template: `<p>sidebar works!</p>`,
+  templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SidebarComponent { }
+export class SidebarComponent {}

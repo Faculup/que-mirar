@@ -4,11 +4,25 @@ import { AuthService } from '../../services/auth.service';
 import { AsyncPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ModalService } from '../../services/modal.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [AsyncPipe, RouterLink, RouterLinkActive],
+  imports: [
+    AsyncPipe,
+    RouterLink,
+    RouterLinkActive,
+    MatFormFieldModule,
+    MatIconModule,
+    MatButtonModule,
+    MatInputModule,
+    FormsModule,
+  ],
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css'],
 })

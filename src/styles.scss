@@ -29,3 +29,6 @@ body.dark .bg-secondary {
   background-size: 400% 400%;
   animation: gradient 10s ease infinite;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
