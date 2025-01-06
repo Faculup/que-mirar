@@ -1,7 +1,7 @@
 .main-section {
   display: grid;
   /* Adjust columns: discord bar gets half a fraction, others scale proportionally */
-  grid-template-columns: 0.5fr 1.1fr repeat(10, 1fr);
+  grid-template-columns: 75px 350px repeat(10, 1fr);
   grid-template-rows: auto 1fr;
   height: 100vh; /* optional for full viewport height */
   margin: 0;
@@ -10,7 +10,7 @@
 
 /* Navbar spans across all columns except Discord bar */
 .nav {
-  grid-column: 4 / -1; /* All 12 columns */
+  grid-column: 3 / -1; /* All 12 columns */
   grid-row: 1 / 2;
 }
 
@@ -24,7 +24,7 @@
 /* Sidebar: Next to Discord bar, spanning 1.5 columns */
 .sidebar {
   background-color: slateblue;
-  grid-column: 2 / 4;
+  grid-column: 2 / 3;
   grid-row: 1 / 3;
 }
 
