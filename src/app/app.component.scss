@@ -10,7 +10,7 @@
 
 /* Navbar spans across all columns except Discord bar */
 .nav {
-  grid-column: 3 / -1; /* All 12 columns */
+  grid-column: 2 / -1; /* All 12 columns */
   grid-row: 1 / 2;
 }
 
