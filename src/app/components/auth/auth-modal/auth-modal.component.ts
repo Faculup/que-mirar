@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ModalComponent } from '../modal/modal.component';
-import { TabsContainerComponent } from '../tabs-container/tabs-container.component';
-import { TabComponent } from '../tab/tab.component';
+import { ModalComponent } from '../../shared/modal/modal.component';
+import { TabsContainerComponent } from '../../shared/tabs-container/tabs-container.component';
+import { TabComponent } from '../../shared/tab/tab.component';
 import { LoginComponent } from '../login/login.component';
 import { RegisterComponent } from '../register/register.component';
 

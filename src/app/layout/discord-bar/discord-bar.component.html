@@ -7,9 +7,8 @@
     class="grid grid-rows-18 h-screen grid-cols-1 gap-y-2 justify-items-center"
   >
     <!-- 1) Main square -->
-    <div data-id="metafy-tooltip" class="row-start-1">
+    <div data-id="metafy-tooltip" class="row-start-1" routerLink="/">
       <a
-        href="#"
         class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg /* typical text/hover color changes */ text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
       >
         <!-- Gradient overlay -->
@@ -30,9 +29,8 @@
     </div>
 
     <!-- 2) Menu square -->
-    <div data-id="metafy-tooltip" class="row-start-2">
+    <div routerLink="/products" class="row-start-2">
       <a
-        href="#"
         class="group relative isolate z-0 flex size-12 shrink-0 items-center justify-center rounded-lg text-gray-700 hover:text-indigo-500 dark:text-gray-300 dark:hover:text-indigo-400"
       >
         <div
@@ -44,7 +42,7 @@
         <div
           class="bg-ondark-medium relative flex size-10 items-center justify-center rounded dark:bg-gray-700 transition-colors"
         >
-          <span class="material-icons text-3xl">menu</span>
+          <span class="material-icons text-3xl">store</span>
         </div>
       </a>
     </div>

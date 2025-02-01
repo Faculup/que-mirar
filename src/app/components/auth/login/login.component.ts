@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
-import { AlertComponent } from '../alert/alert.component';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-login',

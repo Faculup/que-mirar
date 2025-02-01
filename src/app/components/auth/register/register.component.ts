@@ -2,10 +2,10 @@ import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { Match, EmailTaken } from './validators';
-import { InputComponent } from '../input/input.component';
-import { AlertComponent } from '../alert/alert.component';
+import { InputComponent } from '../../shared/input/input.component';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-register',

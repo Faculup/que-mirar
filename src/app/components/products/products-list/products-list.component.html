@@ -1,0 +1,11 @@
+<div class="dark: text-gray-300">
+  <ul>
+    @for(product of products(); track product ) {
+    <li>{{ product.name }} - ${{ product.price }}</li>
+    }
+  </ul>
+</div>
+
+<ng-template #loading>
+  <p>Loading products...</p>
+</ng-template>
