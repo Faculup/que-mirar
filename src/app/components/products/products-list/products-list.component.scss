@@ -1,3 +1,11 @@
-:host {
-  display: block;
+.layout {
+  width: 100%;
+
+  display: grid;
+  /* 3 columns and infinite rows */
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(auto-fit, 1fr);
+  justify-items: center;
+
+  gap: 8px;
 }

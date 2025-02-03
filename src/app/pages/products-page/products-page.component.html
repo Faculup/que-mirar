@@ -1,1 +1,11 @@
-<app-products-list [products]="products()" />
+<section class="page-container">
+  <mat-paginator
+    class="justify-self-center"
+    [length]="products()?.length || 0"
+    [pageSize]="pageSize()"
+    [pageSizeOptions]="[5, 10, 25]"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
+  <app-products-list [products]="paginatedProducts()" />
+</section>

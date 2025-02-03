@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import Product from '../../../models/product.model';
 
 @Component({
   selector: 'app-products-card',
@@ -7,4 +8,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './products-card.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductsCardComponent { }
+export class ProductsCardComponent {
+  public product = input<Product | undefined>(undefined);
+
+  ngOnInit() {
+    console.log(this.product());
+  }
+}
