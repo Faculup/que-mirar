@@ -16,5 +16,5 @@ import { ProductsCardComponent } from '../products-card/products-card.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsListComponent {
-  products = input<Product[] | undefined>([]);
+  products = input.required<Product[]>();
 }
