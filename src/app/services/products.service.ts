@@ -102,6 +102,10 @@ export class ProductsService {
   }
 
   public updatePage(pageIndex: number, pageSize: number): void {
+    if (pageSize !== this.pageSize()) {
+      pageIndex = 0;
+      this.pageCursors = [null];
+    }
     this.pageIndex.set(pageIndex);
     this.pageSize.set(pageSize);
 
@@ -110,6 +114,10 @@ export class ProductsService {
     }
 
     // this.paginatedProductsResource.reload();
+  }
+
+  public getPageIndex(): number {
+    return this.pageIndex();
   }
 
   public getTotalProductsCount(): number {

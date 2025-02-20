@@ -34,6 +34,11 @@ export default class ProductsPageComponent {
     return this.productsService.getTotalProductsCount();
   }
 
+  // Track the service’s current page index.
+  protected get pageIndex(): number {
+    return this.productsService.getPageIndex();
+  }
+
   // Trigger page changes via the updatePage method on the service.
   protected onPageChange(event: PageEvent) {
     this.productsService.updatePage(event.pageIndex, event.pageSize);
