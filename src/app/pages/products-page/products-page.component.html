@@ -14,7 +14,7 @@
     aria-label="Select page"
   >
   </mat-paginator>
-  @if (products()?.length) {
+  @if (products()) {
   <app-products-list [products]="products()" />
   }
 </section>

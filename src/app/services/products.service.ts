@@ -24,80 +24,37 @@ import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { setErrorMessage } from '../utils/error-message';
 import Product from '../models/product.model';
+
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
+  /** Services */
   private firestore = inject(Firestore);
   private productCollection = collection(this.firestore, 'products');
 
-  // Pagination state signals
+  /** Pagination */
   private pageIndex = signal(0);
   private pageSize = signal(10);
-  // Instead of a single lastDocument, use an array to store cursors for each page.
   private pageCursors: Array<QueryDocumentSnapshot<DocumentData> | null> = [
     null,
   ];
-
-  // Total count signal
   private totalProductsCount = signal<number>(0);
 
-  // rxResource to fetch paginated products
+  /** rxResource for products */
   private paginatedProductsResource = rxResource({
     loader: () => {
       const currentPage = this.pageIndex();
       const size = this.pageSize();
-      let q;
+      const q = this.createQueryForPage(currentPage, size);
 
-      if (currentPage === 0) {
-        // For the first page, start at the beginning
-        q = query(this.productCollection, orderBy('price'), limit(size));
-        // Reset the first cursor
-        this.pageCursors[0] = null;
-      } else {
-        // Retrieve the cursor for the current page from our stored cursors
-        const cursor = this.pageCursors[currentPage];
-        if (!cursor) {
-          // Optionally, you might decide to handle this case differently,
-          // for example, by reloading from the beginning.
-          q = query(this.productCollection, orderBy('price'), limit(size));
-        } else {
-          q = query(
-            this.productCollection,
-            orderBy('price'),
-            startAfter(cursor),
-            limit(size)
-          );
-        }
-      }
       return from(getDocs(q)).pipe(
-        map((querySnapshot) => {
-          const products: Product[] = [];
-          querySnapshot.forEach((doc) =>
-            products.push({ id: doc.id, ...doc.data() } as Product)
-          );
-          // Store the cursor for the next page
-          if (querySnapshot.docs.length > 0) {
-            this.pageCursors[currentPage + 1] =
-              querySnapshot.docs[querySnapshot.docs.length - 1];
-          }
-          return products;
-        })
+        map((snapshot) => this.processSnapshot(snapshot, currentPage))
       );
     },
   });
 
-  // Computed signals to expose resource values
-  products = computed(
-    () => this.paginatedProductsResource.value() ?? ([] as Product[])
-  );
-  isLoading = this.paginatedProductsResource.isLoading;
-  error = computed(
-    () => this.paginatedProductsResource.error() as HttpErrorResponse
-  );
-  errorMessage = computed(() => setErrorMessage(this.error(), 'Product'));
-
-  // Optional: Stale data detection using a linked signal
+  /** Stale timer */
   private staleTimerId: any = null;
   dataIsStale = linkedSignal({
     source: this.paginatedProductsResource.status,
@@ -115,39 +72,71 @@ export class ProductsService {
     },
   });
 
+  /** Computed signals to expose resource values */
+  public products = computed(
+    () => this.paginatedProductsResource.value() ?? ([] as Product[])
+  );
+
+  public isLoading = this.paginatedProductsResource.isLoading;
+
+  public error = computed(
+    () => this.paginatedProductsResource.error() as HttpErrorResponse
+  );
+
+  public errorMessage = computed(() =>
+    setErrorMessage(this.error(), 'Product')
+  );
+
   constructor() {
     this.loadTotalProductsCount();
     this.paginatedProductsResource.reload();
   }
 
-  /**
-   * Updates pagination parameters and reloads data.
-   * @param pageIndex The new page index.
-   * @param pageSize The number of items per page.
-   */
-  updatePage(pageIndex: number, pageSize: number): void {
+  public async loadTotalProductsCount() {
+    const countQuery = query(this.productCollection);
+    const snapshot = await getCountFromServer(countQuery);
+    this.totalProductsCount.set(snapshot.data().count);
+  }
+
+  public updatePage(pageIndex: number, pageSize: number): void {
     this.pageIndex.set(pageIndex);
     this.pageSize.set(pageSize);
-    // Optionally, if the page index is reset to 0, clear stored cursors
     if (pageIndex === 0) {
       this.pageCursors = [null];
     }
     this.paginatedProductsResource.reload();
   }
 
-  /**
-   * Loads the total number of products.
-   */
-  async loadTotalProductsCount() {
-    const countQuery = query(this.productCollection);
-    const snapshot = await getCountFromServer(countQuery);
-    this.totalProductsCount.set(snapshot.data().count);
+  public getTotalProductsCount(): number {
+    return this.totalProductsCount();
   }
 
-  /**
-   * Returns the current total products count.
-   */
-  getTotalProductsCount(): number {
-    return this.totalProductsCount();
+  /** Helper Organizational methods */
+  private createQueryForPage(pageIndex: number, pageSize: number) {
+    if (pageIndex === 0) {
+      this.pageCursors[0] = null;
+      return query(this.productCollection, orderBy('price'), limit(pageSize));
+    }
+    const cursor = this.pageCursors[pageIndex];
+    return cursor
+      ? query(
+          this.productCollection,
+          orderBy('price'),
+          startAfter(cursor),
+          limit(pageSize)
+        )
+      : query(this.productCollection, orderBy('price'), limit(pageSize));
+  }
+
+  private processSnapshot(querySnapshot: any, pageIndex: number): Product[] {
+    const products: Product[] = [];
+    querySnapshot.forEach((doc: any) =>
+      products.push({ id: doc.id, ...doc.data() } as Product)
+    );
+    if (querySnapshot.docs.length > 0) {
+      this.pageCursors[pageIndex + 1] =
+        querySnapshot.docs[querySnapshot.docs.length - 1];
+    }
+    return products;
   }
 }
