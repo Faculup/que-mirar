@@ -24,7 +24,6 @@ import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { setErrorMessage } from '../utils/error-message';
 import Product from '../models/product.model';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -35,9 +34,10 @@ export class ProductsService {
   // Pagination state signals
   private pageIndex = signal(0);
   private pageSize = signal(10);
-  private lastDocument = signal<QueryDocumentSnapshot<DocumentData> | null>(
-    null
-  );
+  // Instead of a single lastDocument, use an array to store cursors for each page.
+  private pageCursors: Array<QueryDocumentSnapshot<DocumentData> | null> = [
+    null,
+  ];
 
   // Total count signal
   private totalProductsCount = signal<number>(0);
@@ -48,18 +48,27 @@ export class ProductsService {
       const currentPage = this.pageIndex();
       const size = this.pageSize();
       let q;
+
       if (currentPage === 0) {
         // For the first page, start at the beginning
         q = query(this.productCollection, orderBy('price'), limit(size));
-        this.lastDocument.set(null);
+        // Reset the first cursor
+        this.pageCursors[0] = null;
       } else {
-        // For subsequent pages, start after the last document of the previous page
-        q = query(
-          this.productCollection,
-          orderBy('price'),
-          startAfter(this.lastDocument()),
-          limit(size)
-        );
+        // Retrieve the cursor for the current page from our stored cursors
+        const cursor = this.pageCursors[currentPage];
+        if (!cursor) {
+          // Optionally, you might decide to handle this case differently,
+          // for example, by reloading from the beginning.
+          q = query(this.productCollection, orderBy('price'), limit(size));
+        } else {
+          q = query(
+            this.productCollection,
+            orderBy('price'),
+            startAfter(cursor),
+            limit(size)
+          );
+        }
       }
       return from(getDocs(q)).pipe(
         map((querySnapshot) => {
@@ -67,11 +76,10 @@ export class ProductsService {
           querySnapshot.forEach((doc) =>
             products.push({ id: doc.id, ...doc.data() } as Product)
           );
-          // Update lastDocument for the next page
+          // Store the cursor for the next page
           if (querySnapshot.docs.length > 0) {
-            this.lastDocument.set(
-              querySnapshot.docs[querySnapshot.docs.length - 1]
-            );
+            this.pageCursors[currentPage + 1] =
+              querySnapshot.docs[querySnapshot.docs.length - 1];
           }
           return products;
         })
@@ -101,7 +109,7 @@ export class ProductsService {
         this.staleTimerId = setTimeout(() => {
           this.dataIsStale.set(true);
           this.staleTimerId = null;
-        }, 5000);
+        }, 50000);
       }
       return false;
     },
@@ -109,7 +117,6 @@ export class ProductsService {
 
   constructor() {
     this.loadTotalProductsCount();
-    // Load the initial page of products
     this.paginatedProductsResource.reload();
   }
 
@@ -121,6 +128,10 @@ export class ProductsService {
   updatePage(pageIndex: number, pageSize: number): void {
     this.pageIndex.set(pageIndex);
     this.pageSize.set(pageSize);
+    // Optionally, if the page index is reset to 0, clear stored cursors
+    if (pageIndex === 0) {
+      this.pageCursors = [null];
+    }
     this.paginatedProductsResource.reload();
   }
 
