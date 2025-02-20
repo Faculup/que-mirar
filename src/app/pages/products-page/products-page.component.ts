@@ -41,6 +41,6 @@ export default class ProductsPageComponent {
 
   // Refresh data by reloading the current page.
   protected refresh() {
-    //  this.productsService.reloadData();
+    this.productsService.reloadData();
   }
 }

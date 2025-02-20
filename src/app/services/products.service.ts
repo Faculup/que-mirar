@@ -41,15 +41,17 @@ export class ProductsService {
   ];
   private totalProductsCount = signal<number>(0);
 
-  /** rxResource for products */
+  /** Resource */
   private paginatedProductsResource = rxResource({
-    loader: () => {
-      const currentPage = this.pageIndex();
-      const size = this.pageSize();
-      const q = this.createQueryForPage(currentPage, size);
-
+    request: () => ({
+      page: this.pageIndex(),
+      size: this.pageSize(),
+    }),
+    loader: (params) => {
+      const { page, size } = params.request; // Correctly extract values from the request property
+      const q = this.createQueryForPage(page, size);
       return from(getDocs(q)).pipe(
-        map((snapshot) => this.processSnapshot(snapshot, currentPage))
+        map((snapshot) => this.processSnapshot(snapshot, page))
       );
     },
   });
@@ -92,6 +94,7 @@ export class ProductsService {
     this.paginatedProductsResource.reload();
   }
 
+  // This could be improved.
   public async loadTotalProductsCount() {
     const countQuery = query(this.productCollection);
     const snapshot = await getCountFromServer(countQuery);
@@ -101,14 +104,20 @@ export class ProductsService {
   public updatePage(pageIndex: number, pageSize: number): void {
     this.pageIndex.set(pageIndex);
     this.pageSize.set(pageSize);
+
     if (pageIndex === 0) {
       this.pageCursors = [null];
     }
-    this.paginatedProductsResource.reload();
+
+    // this.paginatedProductsResource.reload();
   }
 
   public getTotalProductsCount(): number {
     return this.totalProductsCount();
+  }
+
+  public reloadData(): void {
+    this.paginatedProductsResource.reload();
   }
 
   /** Helper Organizational methods */
