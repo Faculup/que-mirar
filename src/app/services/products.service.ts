@@ -1,14 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import {
-  Injectable,
-  ResourceStatus,
-  computed,
-  inject,
-  linkedSignal,
-} from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+  Firestore,
+  collection,
+  collectionData,
+  query,
+  orderBy,
+  limit,
+  startAfter,
+  getDocs,
+  getCountFromServer,
+} from '@angular/fire/firestore';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { delay, map } from 'rxjs';
+import { map } from 'rxjs';
 import { setErrorMessage } from '../utils/error-message';
 import Product from '../models/product.model';
 
@@ -18,40 +22,85 @@ import Product from '../models/product.model';
 export class ProductsService {
   private firestore = inject(Firestore);
 
-  private productsResource = rxResource({
-    loader: () =>
-      collectionData(collection(this.firestore, 'products'), {
-        idField: 'id',
-      }).pipe(
-        delay(500),
-        map((data) => data as Product[]) // Add type casting here
-      ),
-  });
+  private pageSize = signal(10);
+  private pageIndex = signal(0);
+  private lastDocument = signal<any>(null);
+  private productCollection = collection(this.firestore, 'products');
+  private totalProductsCount = signal<number>(0);
 
-  products = computed(() => this.productsResource.value() ?? ([] as Product[]));
-  error = computed(() => this.productsResource.error() as HttpErrorResponse);
+  // Signals
+  products = signal<Product[]>([]);
+  isLoading = signal<boolean>(false);
+  error = signal<HttpErrorResponse | null>(null);
   errorMessage = computed(() => setErrorMessage(this.error(), 'Product'));
-  isLoading = this.productsResource.isLoading;
+  dataIsStale = signal<boolean>(false);
 
-  // Stale data detection
-  private timerId = 0 as any;
-  dataIsStale = linkedSignal({
-    source: this.productsResource.status,
-    computation: (status) => {
-      if (this.timerId > 0) {
-        clearTimeout(this.timerId);
-      }
-      if (status === ResourceStatus.Resolved) {
-        this.timerId = setTimeout(() => {
-          this.dataIsStale.set(true);
-          this.timerId = 0;
-        }, 5000);
-      }
-      return false;
-    },
-  });
+  constructor() {
+    this.loadTotalProductsCount();
+    this.getProductsPage(0, this.pageSize());
+  }
 
-  reloadData() {
-    this.productsResource.reload();
+  async getProductsPage(pageIndex: number, pageSize: number) {
+    this.isLoading.set(true);
+    try {
+      let q;
+      if (pageIndex === 0) {
+        // For the first page, start at the beginning
+        q = query(
+          this.productCollection,
+          orderBy('price'), // Or any field you want to order by
+          limit(pageSize)
+        );
+        this.lastDocument.set(null);
+      } else {
+        // For subsequent pages, start after the last document of the previous page
+        q = query(
+          this.productCollection,
+          orderBy('price'), // Or any field you want to order by
+          startAfter(this.lastDocument()),
+          limit(pageSize)
+        );
+      }
+
+      const querySnapshot = await getDocs(q);
+      const products: Product[] = [];
+
+      querySnapshot.forEach((doc) => {
+        products.push({ id: doc.id, ...doc.data() } as Product);
+      });
+
+      this.products.set(products);
+
+      // Update last document for the next page
+      if (querySnapshot.docs.length > 0) {
+        this.lastDocument.set(
+          querySnapshot.docs[querySnapshot.docs.length - 1]
+        );
+      } else {
+        this.lastDocument.set(null);
+      }
+
+      this.isLoading.set(false);
+      this.error.set(null);
+      this.dataIsStale.set(false);
+    } catch (e: any) {
+      this.error.set(e);
+      this.isLoading.set(false);
+      this.products.set([]);
+    }
+  }
+
+  async loadTotalProductsCount() {
+    const countQuery = query(this.productCollection);
+    const snapshot = await getCountFromServer(countQuery);
+    this.totalProductsCount.set(snapshot.data().count);
+  }
+
+  getTotalProductsCount(): number {
+    return this.totalProductsCount();
+  }
+
+  setPageSize(pageSize: number): void {
+    this.pageSize.set(pageSize);
   }
 }

@@ -3,21 +3,18 @@
   <div class="error-message">{{ error }}</div>
   } @if (isLoading()) {
   <mat-spinner class="loading-spinner" />
-  } @if (dataIsStale()) {
-  <div class="stale-data-warning">
-    <span>Data might be outdated</span>
-    <button mat-raised-button color="primary" (click)="refresh()">
-      Refresh
-    </button>
-  </div>
-  } @if (products()?.length) {
+  }
   <mat-paginator
     class="justify-self-center"
-    [length]="products().length"
-    [pageSize]="pageSize()"
-    [pageSizeOptions]="[5, 10, 25]"
+    [length]="totalProductsCount"
+    [pageSize]="10"
+    [pageSizeOptions]="pageSizeOptions"
     (page)="onPageChange($event)"
-  />
-  <app-products-list [products]="paginatedProducts()" />
+    [showFirstLastButtons]="true"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+  @if (products()?.length) {
+  <app-products-list [products]="products()" />
   }
 </section>

@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ProductsService } from '../../services/products.service';
 import { CommonModule } from '@angular/common';
 import { ProductsListComponent } from '../../components/products/products-list/products-list.component';
@@ -28,27 +22,23 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export default class ProductsPageComponent {
   private productsService = inject(ProductsService);
-  private pageIndex = signal(0);
-  protected pageSize = signal(10);
 
   protected products = this.productsService.products;
   protected isLoading = this.productsService.isLoading;
   protected errorMessage = this.productsService.errorMessage;
-  protected dataIsStale = this.productsService.dataIsStale;
 
-  protected paginatedProducts = computed(() => {
-    const all = this.products();
-    const startIndex = this.pageIndex() * this.pageSize();
-    const endIndex = startIndex + this.pageSize();
-    return all.slice(startIndex, endIndex);
-  });
+  protected pageSizeOptions = [5, 10, 25];
+
+  get totalProductsCount(): number {
+    return this.productsService.getTotalProductsCount();
+  }
 
   protected onPageChange(event: PageEvent) {
-    this.pageIndex.set(event.pageIndex);
-    this.pageSize.set(event.pageSize);
+    this.productsService.setPageSize(event.pageSize);
+    this.productsService.getProductsPage(event.pageIndex, event.pageSize);
   }
 
   protected refresh() {
-    this.productsService.reloadData();
+    //this.productsService.reloadData();
   }
 }
