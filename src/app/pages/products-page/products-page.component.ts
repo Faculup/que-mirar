@@ -23,22 +23,24 @@ import { MatButtonModule } from '@angular/material/button';
 export default class ProductsPageComponent {
   private productsService = inject(ProductsService);
 
+  // Expose service signals as component properties.
   protected products = this.productsService.products;
   protected isLoading = this.productsService.isLoading;
   protected errorMessage = this.productsService.errorMessage;
-
   protected pageSizeOptions = [5, 10, 25];
 
+  // Total count for the paginator.
   get totalProductsCount(): number {
     return this.productsService.getTotalProductsCount();
   }
 
+  // Trigger page changes via the updatePage method on the service.
   protected onPageChange(event: PageEvent) {
-    this.productsService.setPageSize(event.pageSize);
-    this.productsService.getProductsPage(event.pageIndex, event.pageSize);
+    this.productsService.updatePage(event.pageIndex, event.pageSize);
   }
 
+  // Refresh data by reloading the current page.
   protected refresh() {
-    //this.productsService.reloadData();
+    //  this.productsService.reloadData();
   }
 }
