@@ -3,7 +3,10 @@
 
   display: grid;
   /* 3 columns and infinite rows */
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  ); // updated for more columns
   grid-template-rows: repeat(auto-fit, 1fr);
   justify-items: center;
 
