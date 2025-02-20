@@ -16,6 +16,8 @@
   >
   </mat-paginator>
   @if (products()) {
-  <app-products-list [products]="products()" />
+  <cdk-virtual-scroll-viewport itemSize="250" class="viewport">
+    <app-products-list [products]="products()" />
+  </cdk-virtual-scroll-viewport>
   }
 </section>
