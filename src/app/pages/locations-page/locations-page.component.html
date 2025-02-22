@@ -1,0 +1,42 @@
+<div class="flex h-screen w-screen gap-8 mx-8">
+  <div class="1/5">
+    <!-- Zoom Input -->
+    <!-- <input 
+      type="range" 
+      name="zoom" 
+      min="0" 
+      max="20" 
+      class="w-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300" 
+      [(ngModel)]="zoom" 
+    /> -->
+
+    <!-- Location List -->
+    <div
+      class="divide-y-2 overflow-auto pr-4 pb-4 gap-8 bg-blue-700 dark:bg-gray-800"
+    >
+      @for(location of $locations(); track location) {
+      <div
+        class="max-w-md text-gray-800 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md"
+      >
+        <div class="flex flex-col pb-3">
+          <dt class="mb-1 text-gray-600 dark:text-gray-400 md:text-lg">
+            {{ location.name }}
+          </dt>
+          <dd
+            class="text-lg font-semibold text-indigo-500 dark:text-indigo-400"
+          >
+            {{ location.description }}
+          </dd>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Main Display Section -->
+  <div class="w-4/5">
+    <div
+      class="w-full h-full bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md"
+    ></div>
+  </div>
+</div>

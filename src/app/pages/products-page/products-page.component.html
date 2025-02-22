@@ -1,23 +1,50 @@
-<section class="page-container">
-  @if (errorMessage(); as error) {
-  <div class="error-message">{{ error }}</div>
-  } @if (isLoading()) {
-  <mat-spinner class="loading-spinner" />
-  }
-  <mat-paginator
-    class="justify-self-center"
-    [pageIndex]="pageIndex"
-    [length]="totalProductsCount"
-    [pageSize]="10"
-    [pageSizeOptions]="pageSizeOptions"
-    (page)="onPageChange($event)"
-    [showFirstLastButtons]="false"
-    aria-label="Select page"
-  >
-  </mat-paginator>
-  @if (products()) {
-  <cdk-virtual-scroll-viewport itemSize="250" class="viewport">
-    <app-products-list [products]="products()" />
-  </cdk-virtual-scroll-viewport>
-  }
-</section>
+<div class="flex w-screen gap-4">
+  <section class="page-container">
+    @if (errorMessage(); as error) {
+    <div class="error-message">{{ error }}</div>
+    } @if (isLoading()) {
+    <mat-spinner class="loading-spinner" />
+    }
+    <mat-paginator
+      class="justify-self-center"
+      [pageIndex]="pageIndex"
+      [length]="totalProductsCount"
+      [pageSize]="10"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      [showFirstLastButtons]="false"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+    @if (products()) {
+    <cdk-virtual-scroll-viewport itemSize="250" class="viewport">
+      <app-products-list [products]="products()" />
+    </cdk-virtual-scroll-viewport>
+    }
+  </section>
+
+  <section class="page-container">
+    <!-- <app-map-component></app-map-component> -->
+    @if (errorMessage(); as error) {
+    <div class="error-message">{{ error }}</div>
+    } @if (isLoading()) {
+    <mat-spinner class="loading-spinner" />
+    }
+    <mat-paginator
+      class="justify-self-center"
+      [pageIndex]="pageIndex"
+      [length]="totalProductsCount"
+      [pageSize]="10"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      [showFirstLastButtons]="false"
+      aria-label="Select page"
+    >
+    </mat-paginator>
+    @if (products()) {
+    <cdk-virtual-scroll-viewport itemSize="250" class="viewport">
+      <app-stores-list [products]="products()" />
+    </cdk-virtual-scroll-viewport>
+    }
+  </section>
+</div>

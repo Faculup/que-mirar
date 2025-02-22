@@ -1,0 +1,14 @@
+.layout {
+  width: 100%;
+
+  display: grid;
+  /* 3 columns and infinite rows */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  ); // updated for more columns
+  grid-template-rows: repeat(auto-fit, 1fr);
+  justify-items: center;
+
+  gap: 8px;
+}

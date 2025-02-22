@@ -6,6 +6,7 @@ import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { StoresListComponent } from '../../components/stores/stores-list/stores-list.component';
 
 @Component({
   selector: 'app-products-page',
@@ -20,6 +21,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatProgressSpinnerModule,
     MatButtonModule,
     ScrollingModule,
+    StoresListComponent,
   ],
 })
 export default class ProductsPageComponent {
