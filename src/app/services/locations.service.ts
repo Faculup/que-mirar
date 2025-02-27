@@ -13,7 +13,8 @@ export class LocationsService {
     return this.http.get<Location[]>(url, {
       params: {
         origin: `${center.lat},${center.lng}`,
-        size: 10,
+        // Número de puntos
+        size: 55,
       },
     });
   }
