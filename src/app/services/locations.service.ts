@@ -20,3 +20,6 @@ export class LocationsService {
 }
 
 // https://api.nicobytes.store/api/v1/locations?size=10&origin=4.6436,-74.214214
+
+// Maps APi key
+// AIzaSyBuJ5d9JmyGMrnNPN2tUSmRQUttu8Ee5Lo
