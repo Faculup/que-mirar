@@ -1,0 +1,26 @@
+<div class="casa-container">
+  <h2>House Layout</h2>
+  
+  <div class="house-layout">
+    @for(room of rooms(); track room.id) {
+      <div 
+        class="room {{ room.position }} {{ room.selected ? 'selected' : '' }}"
+        (click)="toggleRoomSelection(room)">
+        <div class="room-content">
+          <span>{{ room.name }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="selected-rooms">
+    <h3>Selected Rooms:</h3>
+    <ul>
+      @for(room of rooms(); track room.id) {
+        @if(room.selected) {
+          <li>{{ room.name }}</li>
+        }
+      }
+    </ul>
+  </div>
+</div>
