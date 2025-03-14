@@ -1,0 +1,40 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-checkbox {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.checkbox-container {
+  margin-bottom: 16px;
+}
+
+.recurring-section {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.recurring-options {
+  margin-top: 8px;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  mat-form-field {
+    width: 48%;
+    margin-right: 4%;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

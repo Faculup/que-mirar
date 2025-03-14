@@ -1,0 +1,155 @@
+<div class="tareas-container">
+  <div class="header">
+    <div class="header-left">
+      <h1 class="text-2xl font-bold">Tasks List</h1>
+      <div class="filters-row">
+        <!-- Room filter info -->
+        <div class="filter-info" *ngIf="currentRoom$ | async as room">
+          <mat-icon>filter_list</mat-icon>
+          <span>Room: {{ room.name }}</span>
+        </div>
+
+        <!-- Completion status filter info -->
+        <div
+          class="filter-info"
+          *ngIf="completionFilter$ | async as completionFilter"
+        >
+          <mat-icon>check_circle</mat-icon>
+          <span
+            >Status:
+            {{
+              completionFilter !== "all"
+                ? completionFilter
+                : ("All" | titlecase)
+            }}</span
+          >
+        </div>
+
+        <!-- Clear all filters button -->
+        <button
+          mat-icon-button
+          color="primary"
+          matTooltip="Clear all filters"
+          (click)="clearAllFilters()"
+          class="clear-filters-btn"
+        >
+          <mat-icon>filter_alt_off</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <!-- Filter dropdown -->
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="filterMenu"
+        aria-label="Filter options"
+      >
+        <mat-icon>tune</mat-icon>
+      </button>
+      <mat-menu #filterMenu="matMenu">
+        <button mat-menu-item (click)="setCompletionFilter('all')">
+          <mat-icon>filter_list</mat-icon>
+          <span>Show All</span>
+        </button>
+        <button mat-menu-item (click)="setCompletionFilter('completed')">
+          <mat-icon>task_alt</mat-icon>
+          <span>Show Completed</span>
+        </button>
+        <button mat-menu-item (click)="setCompletionFilter('pending')">
+          <mat-icon>pending_actions</mat-icon>
+          <span>Show Pending</span>
+        </button>
+      </mat-menu>
+
+      <!-- Add task button -->
+      <button
+        mat-fab
+        color="primary"
+        (click)="openCreateDialog()"
+        aria-label="Add task"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="tareas$ | async as tareas; else loading">
+    <div
+      *ngIf="tareas.length > 0; else noTareas"
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+    >
+      <div
+        *ngFor="let tarea of tareas"
+        class="bg-white rounded-lg shadow-md p-4 border border-gray-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+      >
+        <div class="mb-3">
+          <h3 class="text-lg font-semibold">{{ tarea.title }}</h3>
+          <p class="text-sm text-gray-500">
+            Created: {{ tarea.createdAt.toDate() | date }}
+          </p>
+          <!-- Display recurring information if applicable -->
+          <p
+            *ngIf="tarea.isRecurring"
+            class="text-sm text-blue-600 mt-1 flex items-center"
+          >
+            <mat-icon class="text-sm mr-1">repeat</mat-icon>
+            Every {{ tarea.recurringDays }} days
+            <span *ngIf="tarea.endDate">
+              until {{ tarea.endDate.toDate() | date }}</span
+            >
+          </p>
+        </div>
+
+        <div class="mb-4">
+          <p class="text-gray-700">{{ tarea.description }}</p>
+          <p
+            class="mt-2 font-medium"
+            [ngClass]="tarea.completed ? 'text-green-600' : 'text-amber-600'"
+          >
+            Status: {{ tarea.completed ? "Completed" : "Pending" }}
+          </p>
+        </div>
+
+        <div class="flex justify-end gap-2">
+          <!-- Add Complete button for pending tasks -->
+          <button
+            *ngIf="!tarea.completed"
+            mat-raised-button
+            color="primary"
+            (click)="completeTarea(tarea.id!)"
+            aria-label="Mark task as completed"
+          >
+            <mat-icon>done</mat-icon>
+            Complete
+          </button>
+
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="deleteTarea(tarea.id!)"
+            aria-label="Delete task"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noTareas>
+      <div class="text-center py-10 text-gray-600">
+        <p>
+          No tasks found with the current filters. Try changing filters or
+          adding new tasks.
+        </p>
+      </div>
+    </ng-template>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="flex flex-col items-center py-10">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p class="mt-3 text-gray-600">Loading tasks...</p>
+    </div>
+  </ng-template>
+</div>

@@ -1,3 +1,169 @@
 :host {
   display: block;
 }
+
+.scoreboard-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.scoreboard-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  mat-card-header {
+    padding: 20px 20px 0;
+
+    mat-card-title {
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    mat-card-subtitle {
+      color: #666;
+      font-size: 16px;
+    }
+  }
+
+  mat-card-content {
+    padding: 20px;
+  }
+}
+
+.stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 20px 10px;
+  text-align: center;
+  gap: 10px;
+
+  .stat-item {
+    flex: 1;
+    min-width: 150px;
+    padding: 15px 10px;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-value {
+      font-size: 48px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 15px;
+    }
+
+    .stat-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #666;
+
+      .stat-icon {
+        margin-right: 6px;
+      }
+    }
+
+    &.points .stat-value {
+      color: #f59e0b; // amber
+    }
+
+    &.tasks .stat-value {
+      color: #ef4444; // red
+    }
+
+    &.created .stat-value {
+      color: #3b82f6; // blue
+    }
+
+    &.completed .stat-value {
+      color: #10b981; // emerald
+    }
+  }
+}
+
+mat-divider {
+  height: 100px;
+  align-self: center;
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    flex-direction: column;
+
+    mat-divider[vertical] {
+      display: none;
+    }
+
+    .stat-item {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.user-stats {
+  margin: 16px 0 24px;
+}
+
+.user-name {
+  font-size: 20px;
+  margin-bottom: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.section-title {
+  font-size: 20px;
+  margin: 24px 0 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+  font-weight: 500;
+  color: #333;
+}
+
+.household-stats {
+  margin-top: 30px;
+}
+
+.no-users-message {
+  text-align: center;
+  padding: 30px;
+  color: #666;
+
+  p:first-child {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+
+  p {
+    margin-top: 16px;
+    color: #666;
+    font-style: italic;
+  }
+}
+
+.debug-info {
+  display: none;
+}
+
+.refresh-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 0;
+}

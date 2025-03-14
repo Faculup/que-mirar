@@ -1,1 +1,114 @@
-<p>scoreboard works!</p>
+<div class="scoreboard-container">
+  <mat-card class="scoreboard-card">
+    <mat-card-header>
+      <mat-card-title>House Scoreboard</mat-card-title>
+      <mat-card-subtitle
+        >Track progress and achievements for all household
+        members</mat-card-subtitle
+      >
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Current User Stats -->
+      <div *ngIf="currentUserData()" class="user-stats">
+        <h3 class="user-name">Your Statistics</h3>
+        <div class="stats-grid">
+          <div class="stat-item points">
+            <div class="stat-value">{{ currentUserData()?.points }}</div>
+            <div class="stat-label">
+              <mat-icon class="stat-icon">stars</mat-icon>
+              Your Points
+            </div>
+          </div>
+
+          <mat-divider vertical></mat-divider>
+
+          <div class="stat-item tasks">
+            <div class="stat-value">{{ currentUserData()?.pendingTasks }}</div>
+            <div class="stat-label">
+              <mat-icon class="stat-icon">pending_actions</mat-icon>
+              Your Pending Tasks
+            </div>
+          </div>
+
+          <mat-divider vertical></mat-divider>
+
+          <div class="stat-item completed">
+            <div class="stat-value">
+              {{ currentUserData()?.completedTasks }}
+            </div>
+            <div class="stat-label">
+              <mat-icon class="stat-icon">task_alt</mat-icon>
+              Your Completed Tasks
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Refresh button -->
+      <div class="refresh-button-container">
+        <button mat-raised-button color="accent" (click)="forceRefreshUsers()">
+          <mat-icon>refresh</mat-icon>
+          Refresh Users Data
+        </button>
+      </div>
+
+      <!-- Loading indicator -->
+      <div *ngIf="isLoading()" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading user data...</p>
+      </div>
+
+      <!-- Assigned Users Stats -->
+      <div *ngIf="hasAssignedUsers()" class="household-stats">
+        <h3 class="section-title">Household Members</h3>
+
+        <mat-tab-group>
+          <mat-tab
+            *ngFor="let user of assignedUsersData()"
+            [label]="user.displayName"
+          >
+            <div class="user-stats">
+              <div class="stats-grid">
+                <div class="stat-item points">
+                  <div class="stat-value">{{ user.points }}</div>
+                  <div class="stat-label">
+                    <mat-icon class="stat-icon">stars</mat-icon>
+                    Total Points
+                  </div>
+                </div>
+
+                <mat-divider vertical></mat-divider>
+
+                <div class="stat-item tasks">
+                  <div class="stat-value">{{ user.pendingTasks }}</div>
+                  <div class="stat-label">
+                    <mat-icon class="stat-icon">pending_actions</mat-icon>
+                    Pending Tasks
+                  </div>
+                </div>
+
+                <mat-divider vertical></mat-divider>
+
+                <div class="stat-item completed">
+                  <div class="stat-value">{{ user.completedTasks }}</div>
+                  <div class="stat-label">
+                    <mat-icon class="stat-icon">task_alt</mat-icon>
+                    Completed Tasks
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+
+      <div *ngIf="!isLoading() && !hasAssignedUsers()" class="no-users-message">
+        <p>No other users assigned to this house yet.</p>
+        <p>
+          The house owner can assign users through the house management screen.
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

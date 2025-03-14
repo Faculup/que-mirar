@@ -1,0 +1,67 @@
+.tareas-container {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+
+      h1 {
+        margin-bottom: 8px;
+      }
+
+      .filters-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 5px;
+      }
+
+      .filter-info {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        color: #666;
+        background-color: rgba(25, 118, 210, 0.1);
+        padding: 4px 10px;
+        border-radius: 16px;
+        border: 1px solid rgba(25, 118, 210, 0.2);
+
+        mat-icon {
+          font-size: 16px;
+          height: 16px;
+          width: 16px;
+          margin-right: 5px;
+          color: #1976d2;
+        }
+      }
+
+      .clear-filters-btn {
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+
+        mat-icon {
+          font-size: 16px;
+          line-height: 16px;
+          height: 16px;
+          width: 16px;
+        }
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}

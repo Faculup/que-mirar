@@ -1,26 +1,93 @@
 <div class="casa-container">
-  <h2>House Layout</h2>
-  
-  <div class="house-layout">
-    @for(room of rooms(); track room.id) {
-      <div 
-        class="room {{ room.position }} {{ room.selected ? 'selected' : '' }}"
-        (click)="toggleRoomSelection(room)">
-        <div class="room-content">
-          <span>{{ room.name }}</span>
+  <div class="casa-selection">
+    <div class="header">
+      <h2>Your Houses</h2>
+      <button
+        mat-fab
+        color="primary"
+        (click)="openCreateCasaDialog()"
+        class="add-button"
+        aria-label="Add house"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div class="casa-list">
+      <ng-container *ngIf="casas$ | async as casas">
+        <div *ngIf="casas.length > 0; else noCasas">
+          <div
+            *ngFor="let casa of casas"
+            class="casa-item"
+            [class.active]="selectedCasa?.id === casa.id"
+            (click)="onCasaSelect(casa)"
+          >
+            <h3>{{ casa.name }}</h3>
+            <p *ngIf="casa.address">{{ casa.address }}</p>
+          </div>
         </div>
-      </div>
-    }
+      </ng-container>
+
+      <ng-template #noCasas>
+        <div class="no-data-message">
+          <p>You don't have any houses yet. Click the + button to add one.</p>
+        </div>
+      </ng-template>
+    </div>
   </div>
 
-  <div class="selected-rooms">
-    <h3>Selected Rooms:</h3>
-    <ul>
-      @for(room of rooms(); track room.id) {
-        @if(room.selected) {
-          <li>{{ room.name }}</li>
-        }
-      }
-    </ul>
+  <div class="room-layout" *ngIf="selectedCasa">
+    <div class="header">
+      <h2>Rooms in {{ selectedCasa.name }}</h2>
+      <div class="action-buttons">
+        <button
+          mat-mini-fab
+          color="accent"
+          (click)="openAssignUsersDialog()"
+          class="action-button"
+          matTooltip="Assign users to this house"
+          aria-label="Assign users to house"
+        >
+          <mat-icon>person_add</mat-icon>
+        </button>
+        <button
+          mat-fab
+          color="primary"
+          (click)="openCreateRoomDialog()"
+          class="add-button"
+          aria-label="Add room"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="room-grid">
+      <ng-container *ngIf="rooms$ | async as rooms">
+        <div *ngIf="rooms.length > 0; else noRooms">
+          <div
+            *ngFor="let room of rooms"
+            class="room-item"
+            [class.selected]="isRoomSelected(room)"
+            (click)="onRoomSelect(room)"
+          >
+            <div class="room-header">
+              <h4>{{ room.name }}</h4>
+              <mat-icon *ngIf="isRoomSelected(room)" class="selected-icon"
+                >check_circle</mat-icon
+              >
+            </div>
+            <p *ngIf="room.description">{{ room.description }}</p>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-template #noRooms>
+        <div class="no-data-message">
+          <p>
+            This house doesn't have any rooms yet. Click the + button to add
+            one.
+          </p>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>
