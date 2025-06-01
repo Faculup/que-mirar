@@ -6,7 +6,7 @@ import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.comp
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { DiscordBarComponent } from './layout/discord-bar/discord-bar.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
-import { MobileAppComponent } from './layout/mobile-app/mobile-app.component';
+import { MobileAppComponent } from './mobile-app/mobile-app/mobile-app.component';
 import { ScreenService } from './services/screen.service';
 
 @Component({

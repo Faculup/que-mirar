@@ -14,11 +14,11 @@ import { AuthModalComponent } from '../../components/auth/auth-modal/auth-modal.
     CommonModule,
     MatIconModule,
     MatButtonModule,
-    AuthModalComponent
+    AuthModalComponent,
   ],
   templateUrl: './mobile-app.component.html',
   styleUrl: './mobile-app.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MobileAppComponent {
   auth = inject(AuthService);
