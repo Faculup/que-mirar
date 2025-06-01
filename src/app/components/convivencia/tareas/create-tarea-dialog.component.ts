@@ -69,6 +69,7 @@ export class CreateTareaDialogComponent implements OnInit {
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],
       completed: [false],
+      dueDate: [null], // Add due date field
       isRecurring: [false],
       recurringDays: [
         { value: 7, disabled: true },
@@ -182,9 +183,10 @@ export class CreateTareaDialogComponent implements OnInit {
           description: formValues.description || '',
           completed: formValues.completed,
           createdAt: Timestamp.now(),
+          dueDate: formValues.dueDate ? Timestamp.fromDate(formValues.dueDate) : null, // Add due date
           isRecurring: formValues.isRecurring,
-          roomId: formValues.roomId, // This will be null if category is not a house
-          categoryId: formValues.categoryId, // Add the category ID to the task
+          roomId: formValues.roomId,
+          categoryId: formValues.categoryId,
           endDate: null,
           createdBy: user.uid,
         };
