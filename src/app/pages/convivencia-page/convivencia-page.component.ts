@@ -17,4 +17,22 @@ import { TareasListComponent } from '../../components/convivencia/tareas/tareas-
   styleUrl: './convivencia-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class ConvivenciaPageComponent {}
+export default class ConvivenciaPageComponent {
+  activeTab: string | null = 'casa'; // Default open tab
+  expandedColumn: 'left' | 'center' | 'right' | null = null;
+
+  toggleTab(tab: string): void {
+    // Toggle: if clicking the same tab, close it; otherwise open the new tab
+    this.activeTab = this.activeTab === tab ? null : tab;
+  }
+
+  toggleExpand(column: 'left' | 'center' | 'right'): void {
+    if (this.expandedColumn === column) {
+      // If already expanded, collapse it
+      this.expandedColumn = null;
+    } else {
+      // Expand the clicked column
+      this.expandedColumn = column;
+    }
+  }
+}

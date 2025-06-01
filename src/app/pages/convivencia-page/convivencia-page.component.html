@@ -2,16 +2,52 @@
   <h1>Convivencia Page</h1>
 
   <div class="grid-layout">
-    <div class="column column-left">
-      <app-scoreboard />
+    <div
+      class="column column-left"
+      [class.expanded]="expandedColumn === 'left'"
+      [class.hidden]="expandedColumn !== null && expandedColumn !== 'left'"
+    >
+      <div class="column-header" (click)="toggleExpand('left')">
+        <span class="expand-icon">{{
+          expandedColumn === "left" ? "▼" : "▶"
+        }}</span>
+        <span class="header-title">Scoreboard</span>
+      </div>
+      <div class="column-content">
+        <app-scoreboard />
+      </div>
     </div>
 
-    <div class="column column-center">
-      <app-casa></app-casa>
+    <div
+      class="column column-center"
+      [class.expanded]="expandedColumn === 'center'"
+      [class.hidden]="expandedColumn !== null && expandedColumn !== 'center'"
+    >
+      <div class="column-header" (click)="toggleExpand('center')">
+        <span class="expand-icon">{{
+          expandedColumn === "center" ? "▼" : "▶"
+        }}</span>
+        <span class="header-title">Casa</span>
+      </div>
+      <div class="column-content">
+        <app-casa></app-casa>
+      </div>
     </div>
 
-    <div class="column column-right">
-      <app-tareas-list />
+    <div
+      class="column column-right"
+      [class.expanded]="expandedColumn === 'right'"
+      [class.hidden]="expandedColumn !== null && expandedColumn !== 'right'"
+    >
+      <div class="column-header" (click)="toggleExpand('right')">
+        <span class="expand-icon">{{
+          expandedColumn === "right" ? "▼" : "▶"
+        }}</span>
+        <span class="header-title">Tareas</span>
+      </div>
+      <div class="column-content">
+        <app-tareas-list />
+      </div>
     </div>
   </div>
 </div>
