@@ -184,6 +184,7 @@ export class CreateTareaDialogComponent implements OnInit {
           createdAt: Timestamp.now(),
           isRecurring: formValues.isRecurring,
           roomId: formValues.roomId, // This will be null if category is not a house
+          categoryId: formValues.categoryId, // Add the category ID to the task
           endDate: null,
           createdBy: user.uid,
         };
