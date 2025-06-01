@@ -1,14 +1,20 @@
-<div class="main-section">
-  <!-- Top row -->
-  <app-nav class="nav"></app-nav>
+@if (isMobile$ | async) {
+  <!-- Mobile Layout -->
+  <app-mobile-app></app-mobile-app>
+} @else {
+  <!-- Desktop Layout -->
+  <div class="main-section">
+    <!-- Top row -->
+    <app-nav class="nav"></app-nav>
 
-  <!-- Second row -->
-  <app-discord-bar class="discord-bar"></app-discord-bar>
-  <!-- <app-sidebar class="sidebar"></app-sidebar> -->
-  <div class="main-content">
-    <router-outlet></router-outlet>
+    <!-- Second row -->
+    <app-discord-bar class="discord-bar"></app-discord-bar>
+    <!-- <app-sidebar class="sidebar"></app-sidebar> -->
+    <div class="main-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- Auth modal (if needed) -->
+    <app-auth-modal></app-auth-modal>
   </div>
-
-  <!-- Auth modal (if needed) -->
-  <app-auth-modal></app-auth-modal>
-</div>
+}
