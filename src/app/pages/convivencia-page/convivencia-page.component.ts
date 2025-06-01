@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ScoreboardComponent } from '../../components/convivencia/scoreboard/scoreboard.component';
 
-import { CasaComponent } from '../../components/convivencia/casa/casa.component';
+import { CasaComponent } from '../../components/convivencia/categorias/casa.component';
 import { TareasListComponent } from '../../components/convivencia/tareas/tareas-list.component';
 
 @Component({

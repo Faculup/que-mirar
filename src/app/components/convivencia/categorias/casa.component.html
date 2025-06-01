@@ -1,13 +1,13 @@
 <div class="casa-container">
   <div class="casa-selection">
     <div class="header">
-      <h2>Your Houses</h2>
+      <h2>Your Categories</h2>
       <button
         mat-fab
         color="primary"
         (click)="openCreateCasaDialog()"
         class="add-button"
-        aria-label="Add house"
+        aria-label="Add category"
       >
         <mat-icon>add</mat-icon>
       </button>
@@ -19,23 +19,40 @@
             *ngFor="let casa of casas"
             class="casa-item"
             [class.active]="selectedCasa?.id === casa.id"
-            (click)="onCasaSelect(casa)"
           >
-            <h3>{{ casa.name }}</h3>
-            <p *ngIf="casa.address">{{ casa.address }}</p>
+            <div class="casa-item-content" (click)="onCasaSelect(casa)">
+              <h3>{{ casa.name }}</h3>
+              <p *ngIf="casa.address">{{ casa.address }}</p>
+              <!-- This is the indicator showing if it's a house type category -->
+              <div class="category-type">
+                <mat-icon>{{ casa.isHouse ? "home" : "category" }}</mat-icon>
+                <span>{{ casa.isHouse ? "House" : "Category" }}</span>
+              </div>
+            </div>
+            <button
+              mat-icon-button
+              color="warn"
+              class="delete-button"
+              (click)="deleteCategory(casa)"
+              aria-label="Delete category"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
           </div>
         </div>
       </ng-container>
 
       <ng-template #noCasas>
         <div class="no-data-message">
-          <p>You don't have any houses yet. Click the + button to add one.</p>
+          <p>
+            You don't have any categories yet. Click the + button to add one.
+          </p>
         </div>
       </ng-template>
     </div>
   </div>
 
-  <div class="room-layout" *ngIf="selectedCasa">
+  <div class="room-layout" *ngIf="selectedCasa && isCategoryHome()">
     <div class="header">
       <h2>Rooms in {{ selectedCasa.name }}</h2>
       <div class="action-buttons">
@@ -44,8 +61,8 @@
           color="accent"
           (click)="openAssignUsersDialog()"
           class="action-button"
-          matTooltip="Assign users to this house"
-          aria-label="Assign users to house"
+          matTooltip="Assign users to this category"
+          aria-label="Assign users to category"
         >
           <mat-icon>person_add</mat-icon>
         </button>
@@ -83,7 +100,7 @@
       <ng-template #noRooms>
         <div class="no-data-message">
           <p>
-            This house doesn't have any rooms yet. Click the + button to add
+            This category doesn't have any rooms yet. Click the + button to add
             one.
           </p>
         </div>

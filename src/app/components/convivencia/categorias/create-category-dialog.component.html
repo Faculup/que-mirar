@@ -23,13 +23,13 @@
     </div>
 
     <!-- Address field only appears when isHouse is checked -->
-    <mat-form-field
-      *ngIf="categoryForm.get('isHouse')?.value"
-      appearance="fill"
-      class="full-width address-field"
-    >
+    <mat-form-field *ngIf="categoryForm.get('isHouse')?.value" appearance="fill" class="full-width address-field">
       <mat-label>Address</mat-label>
-      <input matInput formControlName="address" placeholder="House location" />
+      <input
+        matInput
+        formControlName="address"
+        placeholder="House location"
+      />
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
@@ -41,6 +41,7 @@
         rows="3"
       ></textarea>
     </mat-form-field>
+
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">

@@ -11,6 +11,9 @@ import {
   arrayUnion,
   arrayRemove,
   getDoc,
+  deleteDoc,
+  writeBatch,
+  getDocs,
 } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 import { Casa } from '../models/casa.model';
@@ -112,5 +115,31 @@ export class CasaService {
         return null;
       })
     );
+  }
+
+  // Delete a category and its associated rooms
+  async deleteCategory(categoryId: string): Promise<void> {
+    // First, get all rooms associated with this category
+    const roomsCollection = collection(this.firestore, 'rooms');
+    const roomsQuery = query(
+      roomsCollection,
+      where('casaId', '==', categoryId)
+    );
+
+    // Get all rooms linked to this category
+    const roomSnapshot = await getDocs(roomsQuery);
+
+    // Delete each room
+    const batch = writeBatch(this.firestore);
+    roomSnapshot.docs.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+
+    // Delete the category itself
+    const categoryRef = doc(this.firestore, `casas/${categoryId}`);
+    batch.delete(categoryRef);
+
+    // Commit the batch
+    return batch.commit();
   }
 }

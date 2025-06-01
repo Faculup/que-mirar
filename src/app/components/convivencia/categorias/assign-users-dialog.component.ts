@@ -48,7 +48,7 @@ interface AssignUsersDialogData {
     MatProgressSpinnerModule,
   ],
   template: `
-    <h2 mat-dialog-title>Assign Users to {{ casa?.name || 'House' }}</h2>
+    <h2 mat-dialog-title>Assign Users to {{ casa?.name || 'Category' }}</h2>
     <div mat-dialog-content>
       <div *ngIf="loading" class="loading-spinner">
         <mat-spinner diameter="40"></mat-spinner>

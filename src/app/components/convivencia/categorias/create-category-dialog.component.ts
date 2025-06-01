@@ -10,12 +10,13 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Casa } from '../../../models/casa.model';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Category } from '../../../models/casa.model';
 import { AuthService } from '../../../services/auth.service';
 import { first } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-create-casa-dialog',
+  selector: 'app-create-category-dialog',
   standalone: true,
   imports: [
     CommonModule,
@@ -24,27 +25,29 @@ import { first } from 'rxjs/operators';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCheckboxModule,
   ],
-  templateUrl: './create-casa-dialog.component.html',
-  styleUrls: ['./create-casa-dialog.component.scss'],
+  templateUrl: './create-category-dialog.component.html',
+  styleUrls: ['./create-category-dialog.component.scss'],
 })
-export class CreateCasaDialogComponent {
-  casaForm: FormGroup;
+export class CreateCategoryDialogComponent {
+  categoryForm: FormGroup;
   private authService = inject(AuthService);
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<CreateCasaDialogComponent>
+    private dialogRef: MatDialogRef<CreateCategoryDialogComponent>
   ) {
-    this.casaForm = this.fb.group({
+    this.categoryForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       address: [''],
       description: [''],
+      isHouse: [false], // Default value is false
     });
   }
 
   onSubmit(): void {
-    if (this.casaForm.valid) {
+    if (this.categoryForm.valid) {
       // Use first() to get the current value from the Observable
       this.authService.authState$.pipe(first()).subscribe((user) => {
         if (!user) {
@@ -52,12 +55,12 @@ export class CreateCasaDialogComponent {
           return;
         }
 
-        const casa: Partial<Casa> = {
-          ...this.casaForm.value,
+        const category: Partial<Category> = {
+          ...this.categoryForm.value,
           userId: user.uid,
         };
 
-        this.dialogRef.close(casa);
+        this.dialogRef.close(category);
       });
     }
   }
