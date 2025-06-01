@@ -27,6 +27,8 @@ import {
   Timestamp,
 } from '@angular/fire/firestore';
 import { AuthService } from '../../../services/auth.service';
+import { CasaService } from '../../../services/casa.service';
+import { Casa } from '../../../models/casa.model';
 
 @Component({
   selector: 'app-create-tarea-dialog',
@@ -50,16 +52,20 @@ export class CreateTareaDialogComponent implements OnInit {
   tareaForm: FormGroup;
   selectedRoom$: Observable<Room | null>;
   availableRooms$: Observable<Room[]>;
+  availableCategories$: Observable<Casa[]>;
+  isCategoryHouse = false;
 
   private convivenciaService = inject(ConvivenciaService);
   private firestore = inject(Firestore);
   private authService = inject(AuthService);
+  private casaService = inject(CasaService);
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CreateTareaDialogComponent>
   ) {
     this.tareaForm = this.fb.group({
+      categoryId: [null, Validators.required],
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: [''],
       completed: [false],
@@ -69,10 +75,20 @@ export class CreateTareaDialogComponent implements OnInit {
         [Validators.min(1), Validators.required],
       ],
       endDate: [{ value: null, disabled: true }],
-      roomId: [null, Validators.required],
+      roomId: [{ value: null, disabled: true }],
     });
 
     this.selectedRoom$ = this.convivenciaService.selectedRoom$;
+
+    // Get available categories for the current user
+    this.availableCategories$ = this.authService.authState$.pipe(
+      switchMap((user) => {
+        if (user) {
+          return this.casaService.getCasasByUserId(user.uid);
+        }
+        return of([]);
+      })
+    );
 
     // Get available rooms based on selected casa
     this.availableRooms$ = this.convivenciaService.selectedCasa$.pipe(
@@ -104,6 +120,33 @@ export class CreateTareaDialogComponent implements OnInit {
         endDateControl?.disable();
       }
     });
+
+    // Watch for category changes
+    this.tareaForm.get('categoryId')?.valueChanges.subscribe((categoryId) => {
+      if (categoryId) {
+        // Find the selected category to check if it's a house
+        this.availableCategories$.pipe(first()).subscribe((categories) => {
+          const selectedCategory = categories.find((c) => c.id === categoryId);
+          this.isCategoryHouse = selectedCategory?.isHouse || false;
+
+          // Enable/disable room selection based on if category is a house
+          const roomIdControl = this.tareaForm.get('roomId');
+          if (this.isCategoryHouse) {
+            roomIdControl?.enable();
+            roomIdControl?.setValidators(Validators.required);
+            // Update convivenciaService with selected casa to load rooms
+            if (selectedCategory) {
+              this.convivenciaService.selectCasa(selectedCategory);
+            }
+          } else {
+            roomIdControl?.disable();
+            roomIdControl?.clearValidators();
+            roomIdControl?.setValue(null);
+          }
+          roomIdControl?.updateValueAndValidity();
+        });
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -111,6 +154,13 @@ export class CreateTareaDialogComponent implements OnInit {
     this.selectedRoom$.subscribe((room) => {
       if (room) {
         this.tareaForm.patchValue({ roomId: room.id });
+      }
+    });
+
+    // Check if a category is already selected in the service
+    this.convivenciaService.selectedCasa$.pipe(first()).subscribe((casa) => {
+      if (casa) {
+        this.tareaForm.patchValue({ categoryId: casa.id });
       }
     });
   }
@@ -133,9 +183,9 @@ export class CreateTareaDialogComponent implements OnInit {
           completed: formValues.completed,
           createdAt: Timestamp.now(),
           isRecurring: formValues.isRecurring,
-          roomId: formValues.roomId,
+          roomId: formValues.roomId, // This will be null if category is not a house
           endDate: null,
-          createdBy: user.uid, // Add creator's ID
+          createdBy: user.uid,
         };
 
         // Only add recurring fields if isRecurring is true

@@ -3,14 +3,15 @@ import { Timestamp } from '@angular/fire/firestore';
 export interface Tarea {
   id?: string;
   title: string;
-  description?: string;
+  description: string;
   completed: boolean;
   createdAt: Timestamp;
-  completedAt?: Timestamp | null;
+  roomId?: string; // Optional because not all tasks might have a room
+  categoryId?: string; // Added field for category association
   isRecurring: boolean;
   recurringDays?: number;
-  endDate?: Timestamp | null;
-  roomId?: string;
-  createdBy?: string; // User ID of the task creator
-  completedBy?: string; // User ID of who completed the task
+  endDate: Timestamp | null;
+  createdBy: string;
+  completedBy?: string;
+  completedAt?: Timestamp;
 }

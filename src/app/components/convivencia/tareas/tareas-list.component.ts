@@ -14,9 +14,12 @@ import {
   switchMap,
   combineLatest,
   map,
+  of,
+  from,
 } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
-import { first } from 'rxjs/operators';
+import { catchError, first } from 'rxjs/operators';
+import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 
 import { TareasService } from '../../../services/tareas.service';
 import { ConvivenciaService } from '../../../services/convivencia.service';
@@ -54,6 +57,9 @@ export class TareasListComponent implements OnInit {
   private convivenciaService = inject(ConvivenciaService);
   private dialog = inject(MatDialog);
   private authService = inject(AuthService);
+  private roomNamesCache = new Map<string, string>();
+  private categoryNamesCache = new Map<string, string>();
+  private firestore = inject(Firestore);
 
   constructor() {
     this.currentRoom$ = this.convivenciaService.selectedRoom$;
@@ -135,5 +141,69 @@ export class TareasListComponent implements OnInit {
         error: (error) => console.error('Error completing task', error),
       });
     });
+  }
+
+  // Get room name by ID
+  getRoomName(roomId: string): Observable<string> {
+    // Check if the name is already in cache
+    if (this.roomNamesCache.has(roomId)) {
+      return of(this.roomNamesCache.get(roomId) || 'Unknown Room');
+    }
+
+    // Otherwise fetch from Firestore
+    return from(getDoc(doc(this.firestore, 'rooms', roomId))).pipe(
+      map((docSnap) => {
+        if (docSnap.exists()) {
+          const roomData = docSnap.data() as Room;
+          const roomName = roomData.name || 'Unknown Room';
+          // Cache the result for future use
+          this.roomNamesCache.set(roomId, roomName);
+          return roomName;
+        }
+        return 'Unknown Room';
+      }),
+      catchError(() => of('Unknown Room'))
+    );
+  }
+
+  // Get category name by ID
+  getCategoryName(categoryId: string): Observable<string> {
+    if (!categoryId) {
+      return of('No Category');
+    }
+
+    // Check if the name is already in cache
+    if (this.categoryNamesCache.has(categoryId)) {
+      return of(this.categoryNamesCache.get(categoryId) || 'Unknown Category');
+    }
+
+    // The collection name might be "categories" or "casas" depending on your Firestore structure
+    // First try with "categories"
+    return from(getDoc(doc(this.firestore, 'categories', categoryId))).pipe(
+      switchMap((docSnap) => {
+        if (docSnap.exists()) {
+          const categoryData = docSnap.data() as any;
+          const categoryName = categoryData.name || 'Unknown Category';
+          // Cache the result for future use
+          this.categoryNamesCache.set(categoryId, categoryName);
+          return of(categoryName);
+        }
+
+        // If not found in "categories", try "casas" collection
+        return from(getDoc(doc(this.firestore, 'casas', categoryId))).pipe(
+          map((docSnap) => {
+            if (docSnap.exists()) {
+              const categoryData = docSnap.data() as any;
+              const categoryName = categoryData.name || 'Unknown Category';
+              // Cache the result for future use
+              this.categoryNamesCache.set(categoryId, categoryName);
+              return categoryName;
+            }
+            return 'Unknown Category';
+          })
+        );
+      }),
+      catchError(() => of('Unknown Category'))
+    );
   }
 }

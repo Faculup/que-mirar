@@ -48,4 +48,9 @@ export class ConvivenciaService {
   getCurrentCasa(): Casa | null {
     return this.selectedCasaSubject.getValue();
   }
+
+  // Get current room
+  getCurrentRoom(): Room | null {
+    return this.selectedRoomSubject.getValue();
+  }
 }

@@ -1,8 +1,34 @@
 <h2 mat-dialog-title>Create New Task</h2>
 <form [formGroup]="tareaForm" (ngSubmit)="onSubmit()">
   <mat-dialog-content>
-    <!-- Room Selection -->
+    <!-- Category Selection -->
     <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="categoryId" required>
+        <ng-container *ngIf="availableCategories$ | async as categories">
+          <mat-option *ngFor="let category of categories" [value]="category.id">
+            {{ category.name }}
+            <span *ngIf="category.isHouse" class="category-type">(House)</span>
+          </mat-option>
+        </ng-container>
+        <mat-option
+          *ngIf="(availableCategories$ | async)?.length === 0"
+          disabled
+        >
+          No categories available. Please create a category first.
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="tareaForm.get('categoryId')?.hasError('required')">
+        Please select a category
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Room Selection - Only shown when category is a house -->
+    <mat-form-field
+      appearance="fill"
+      class="full-width"
+      *ngIf="isCategoryHouse"
+    >
       <mat-label>Room</mat-label>
       <mat-select formControlName="roomId" required>
         <ng-container *ngIf="availableRooms$ | async as rooms">
@@ -11,7 +37,7 @@
           </mat-option>
         </ng-container>
         <mat-option *ngIf="(availableRooms$ | async)?.length === 0" disabled>
-          No rooms available. Please select a house first.
+          No rooms available. Please add rooms to this house.
         </mat-option>
       </mat-select>
       <mat-error *ngIf="tareaForm.get('roomId')?.hasError('required')">

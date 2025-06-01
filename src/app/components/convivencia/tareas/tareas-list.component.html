@@ -85,9 +85,24 @@
       >
         <div class="mb-3">
           <h3 class="text-lg font-semibold">{{ tarea.title }}</h3>
-          <p class="text-sm text-gray-500">
-            Created: {{ tarea.createdAt.toDate() | date }}
-          </p>
+          <div class="text-sm text-gray-500 task-metadata">
+            <p>Created: {{ tarea.createdAt.toDate() | date }}</p>
+
+            <!-- Display category information -->
+            <p *ngIf="tarea.categoryId" class="mt-1 flex items-center">
+              <mat-icon class="text-sm mr-1">category</mat-icon>
+              <span
+                >Category: {{ getCategoryName(tarea.categoryId) | async }}</span
+              >
+            </p>
+
+            <!-- Display room information -->
+            <p *ngIf="tarea.roomId" class="mt-1 flex items-center">
+              <mat-icon class="text-sm mr-1">room</mat-icon>
+              <span>Room: {{ getRoomName(tarea.roomId) | async }}</span>
+            </p>
+          </div>
+
           <!-- Display recurring information if applicable -->
           <p
             *ngIf="tarea.isRecurring"
